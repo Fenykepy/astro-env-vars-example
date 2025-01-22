@@ -49,4 +49,10 @@ BACKEND_API_KEY is missing
 
 But this env var is never imported in ssr_page's code…
 
-- Set `BACKEND_API_KEY` as `public` in `astro.config.mjs`, everything works again, but `BACKEND_API_KEY` is now part of the build (which we don't want).
+- Set `BACKEND_API_KEY` as `public` in `astro.config.mjs`:
+  ```
+  [...]
+  BACKEND_API_KEY: envField.string({ context: "server", access: "public"}),
+  [...]
+  ```
+- Build project again, start preview server, now everything works, but `BACKEND_API_KEY` is part of the build (which we'd prefer to avoid, and isn't necessary).

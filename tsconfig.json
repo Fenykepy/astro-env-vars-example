@@ -1,5 +1,17 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  "exclude": ["dist"],
+  "resolveJsonModule": true,
+  "compilerOptions": {
+    "verbatimModuleSyntax": true, // force to use "type" on types import
+    "strictNullChecks": true, // add if using `base` template
+    "allowJs": true, // required, and included with all Astro templates
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@assets/*": ["src/assets/*"]
+    }
+  }
 }

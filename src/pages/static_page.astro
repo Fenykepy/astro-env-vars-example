@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro"
+import { BACKEND_API_KEY } from "astro:env/server"
+
+function fakeFetch() {
+  console.log("BACKEND_API_KEY", BACKEND_API_KEY)
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve("My server data!"), 200)
+  })
+}
+const fakeServerData = await fakeFetch()
+---
+
+<Layout pageTitle="Static page">
+  <h2>Static page</h2>
+  <p>This page has been generated at build.</p>
+  <p>Data fetched from server at build: {fakeServerData}</p>
+  <p>Backend API key (from env vars) shouldn't be part of the build.</p>
+</Layout>

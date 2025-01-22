@@ -1,0 +1,16 @@
+---
+import { Image } from "astro:assets"
+import heroImage from "@assets/astro.svg"
+---
+
+<header role="banner">
+  <h1>
+    <a href="/"><Image src={heroImage} alt="Astro logo" /></a>
+  </h1>
+  <nav>
+    <ul>
+      <li><a href="/static_page">Static page</a></li>
+      <li><a href="/ssr_page">SSR page</a></li>
+    </ul>
+  </nav>
+</header>

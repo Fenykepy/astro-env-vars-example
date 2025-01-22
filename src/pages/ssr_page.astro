@@ -1,0 +1,72 @@
+---
+import Layout from "@layouts/Layout.astro"
+import {
+  MAIL_HOST,
+  MAIL_PORT,
+  MAIL_SECURE,
+  MAIL_AUTH_USER,
+  MAIL_AUTH_PASS,
+} from "astro:env/server"
+
+export const prerender = false
+
+let statusMessage = ""
+
+function fakeMailer(message: string) {
+  console.log("Send fake email with:")
+  console.log("MAIL_HOST", MAIL_HOST)
+  console.log("MAIL_PORT", MAIL_PORT)
+  console.log("MAIL_SECURE", MAIL_SECURE)
+  console.log("MAIL_AUTH_USER", MAIL_AUTH_USER)
+  console.log("MAIL_AUTH_PASS", MAIL_AUTH_PASS)
+  console.log("message", message)
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve("My server data!"), 200)
+  })
+}
+
+if (Astro.request.method === "POST") {
+  const data = await Astro.request.formData()
+  const message = data.get("message")
+
+  if (typeof message === "string") {
+    await fakeMailer(message)
+    statusMessage = "Your message has been sent."
+  } else {
+    statusMessage = "An error occured."
+  }
+}
+---
+
+<Layout pageTitle="SSR page">
+  <h2>SSR page</h2>
+  <p>This page has been generated at runtime.</p>
+  <p>
+    MAIL_* env vars should be part of the build as we need them to send mails at
+    runtime (but shouldn't be send to client).
+  </p>
+  {
+    statusMessage ? (
+      <>
+        <p>{statusMessage}</p>
+        <div>
+          <a href="/ssr_page">OK</a>
+        </div>
+      </>
+    ) : (
+      <form method="post">
+        <label for="id_message">Message:</label>
+        <textarea
+          id="id_message"
+          name="message"
+          rows="15"
+          placeholder="Type your message here..."
+          required
+        />
+        <div>
+          <input type="submit" value="send" />
+        </div>
+      </form>
+    )
+  }
+</Layout>
